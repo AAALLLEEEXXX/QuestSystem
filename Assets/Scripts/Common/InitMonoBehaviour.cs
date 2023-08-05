@@ -1,14 +1,18 @@
 using System;
+using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 
 namespace Common
 {
     public abstract class InitMonoBehaviour<T> : MonoBehaviour, IInitializable<T>
     {
-        protected T InputParams { get; private set; }
-
+        private readonly CompositeDisposable _disposables = new();
         private Action _onDispose;
-    
+        
+        protected T InputParams { get; private set; }
+        public ICollection<IDisposable> Disposables => _disposables;
+        
         public Action OnDispose
         {
             get => _onDispose;
@@ -24,6 +28,7 @@ namespace Common
 
         public virtual void Dispose()
         {
+            _disposables.Clear();
             InputParams = default;
             enabled = false;
         
