@@ -1,6 +1,6 @@
 using System;
 
-namespace Common
+namespace Utils
 {
     public static class DisposeUtils
     {

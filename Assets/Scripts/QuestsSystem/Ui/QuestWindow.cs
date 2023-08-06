@@ -5,6 +5,7 @@ using Quests.Configs;
 using QuestsSystem.Quests;
 using UniRx;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace QuestsSystem.Ui
 {
@@ -30,9 +31,11 @@ namespace QuestsSystem.Ui
 
         [SerializeField] 
         private InfoQuestView _infoQuestView;
+        
+        [SerializeField] 
+        private Button _closeButton;
 
         private List<QuestSlotView> _slots = new();
-        private IQuest _trackingQuest;
 
         protected override void Init()
         {
@@ -43,6 +46,8 @@ namespace QuestsSystem.Ui
             
                 _slots.Add(questSlot);
             }
+
+            _closeButton.OnClickAsObservable().Subscribe(_ => Dispose()).AddTo(Disposables);
 
             var firstSlot = _slots.FirstOrDefault();
         
