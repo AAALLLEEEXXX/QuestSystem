@@ -4,7 +4,6 @@ using System.Linq;
 using Quests.Configs;
 using QuestsSystem.Missions;
 using UniRx;
-using UnityEngine;
 
 namespace QuestsSystem.Quests
 {
@@ -35,6 +34,11 @@ namespace QuestsSystem.Quests
             ResetMission(0);
         }
 
+        public void Dispose()
+        {
+            _disposables.Clear();
+        }
+
         private void SubscribesOnMissions()
         {
             foreach (var mission in _missions)
@@ -45,9 +49,7 @@ namespace QuestsSystem.Quests
         {
             if (IsDone)
             {
-                _onTrackingMission?.Execute(null);
                 _onQuestCompleted?.Execute(_questConfig);
-                Debug.Log("Common Quest done!");
             }
             else
             {
@@ -72,11 +74,6 @@ namespace QuestsSystem.Quests
                 nextMission.Reset();
                 _onTrackingMission?.Execute(nextMission);
             }
-        }
-
-        public void Dispose()
-        {
-            _disposables.Clear();
         }
     }
 }

@@ -9,7 +9,8 @@ namespace QuestsSystem.Tracking
     {
         [SerializeField] 
         private RectTransform _rectTransform;
-    
+        public RectTransform RectTransform => _rectTransform;
+        
         [SerializeField]
         private RectTransform _directionTransform;
     
@@ -18,8 +19,6 @@ namespace QuestsSystem.Tracking
     
         [SerializeField] 
         private Image _arrowIcon;
-
-        public RectTransform RectTransform => _rectTransform;
 
         public void ChangeState(bool isBounded)
         {

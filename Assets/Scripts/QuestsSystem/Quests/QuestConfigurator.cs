@@ -17,12 +17,12 @@ namespace QuestsSystem.Quests
         [SerializeField]
         private SerializableDictionary<string, MissionObjectViewBase> _missionObjects;
 
-        private List<IQuest> _quests = new();
+        private readonly List<IQuest> _quests = new();
         public List<IQuest> Quests => _quests;
 
         public IQuest FirstNotDoneQuest => _quests.FirstOrDefault(quest => !quest.IsDone);
         
-        private ReactiveCommand<QuestConfig> _onQuestCompleted = new();
+        private readonly ReactiveCommand<QuestConfig> _onQuestCompleted = new();
         public IObservable<QuestConfig> OnQuestCompleted => _onQuestCompleted;
 
         protected override void Init()
@@ -38,17 +38,17 @@ namespace QuestsSystem.Quests
             }
         }
 
-        private void QuestCompleted(QuestConfig config)
-        {
-            _onQuestCompleted?.Execute(config);
-        }
-
         public override void Dispose()
         {
             foreach (var quest in _quests)
                 quest.Dispose();
 
             _quests.Clear();
+        }
+
+        private void QuestCompleted(QuestConfig config)
+        {
+            _onQuestCompleted?.Execute(config);
         }
     }
 }

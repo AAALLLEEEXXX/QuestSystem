@@ -38,7 +38,7 @@ namespace QuestsSystem.Ui
 
         private readonly List<QuestSlotView> _slots = new();
         
-        private ReactiveCommand<IQuest> _onTrackingQuest = new();
+        private readonly ReactiveCommand<IQuest> _onTrackingQuest = new();
         public IObservable<IQuest> OnTrackingQuest => _onTrackingQuest;
 
         protected override void Init()

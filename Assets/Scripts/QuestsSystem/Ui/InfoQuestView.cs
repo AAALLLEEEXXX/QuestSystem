@@ -32,7 +32,7 @@ namespace QuestsSystem.Ui
         [SerializeField] 
         private MissionSlotView _missionSlotView;
 
-        private List<MissionSlotView> _slots = new();
+        private readonly List<MissionSlotView> _slots = new();
 
         protected override void Init()
         {

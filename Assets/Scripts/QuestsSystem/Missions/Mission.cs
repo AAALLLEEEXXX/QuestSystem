@@ -7,9 +7,8 @@ namespace QuestsSystem.Missions
 {
     public class Mission : IMission
     {
-        private MissionObjectViewBase _objectView;
-        private bool _active;
-        
+        private readonly IMissionObject _objectView;
+
         private readonly ReactiveCommand<IMission> _onCompleted = new();
         public IObservable<IMission> OnCompleted => _onCompleted;
 
@@ -17,8 +16,9 @@ namespace QuestsSystem.Missions
         public Vector3 Point => _objectView.Position;
 
         private IDisposable _completeDisposable;
-        
-        public Mission(MissionObjectViewBase objectView)
+        private bool _active;
+
+        public Mission(IMissionObject objectView)
         {
             _objectView = objectView;
         }
