@@ -25,6 +25,9 @@ namespace QuestsSystem.Ui
 
         [SerializeField] 
         private Image _selectedBackground;
+        
+        [SerializeField] 
+        private Image _completedBackground;
     
         [SerializeField] 
         private Button _selectedButton;
@@ -36,13 +39,27 @@ namespace QuestsSystem.Ui
 
         protected override void Init()
         {
+            CommonState();
             _title.text = Config.Title;
             _selectedButton.OnClickAsObservable().Subscribe(_ => SelectedSlot()).AddTo(Disposables);
         }
 
-        public void ChangeSelectedSlot(bool isSelected)
+        public void ChangeSelectedState(bool isSelected)
         {
             _selectedBackground.gameObject.SetActive(isSelected);
+        }
+
+        public void CompletedState()
+        {
+            _completedBackground.gameObject.SetActive(true);
+            _selectedButton.gameObject.SetActive(false);
+        }
+
+        private void CommonState()
+        {
+            _selectedBackground.gameObject.SetActive(false);
+            _completedBackground.gameObject.SetActive(false);
+            _selectedButton.gameObject.SetActive(true);
         }
 
         private void SelectedSlot()

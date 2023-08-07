@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Common;
@@ -35,35 +36,21 @@ namespace QuestsSystem.Ui
         [SerializeField] 
         private Button _closeButton;
 
-        private List<QuestSlotView> _slots = new();
+        private readonly List<QuestSlotView> _slots = new();
+        
+        private ReactiveCommand<IQuest> _onTrackingQuest = new();
+        public IObservable<IQuest> OnTrackingQuest => _onTrackingQuest;
 
         protected override void Init()
         {
             foreach (var quest in InputParams.Quests)
             {
-                var questSlot = InputParams.PrefabPool.Get(_questSlotView, new QuestSlotView.Params(quest.Config), _mountRootQuestSlots);
-                questSlot.OnSelectedSlot.Subscribe(SelectedQuest).AddTo(Disposables);
-            
+                var questSlot = GetQuestSlot(quest);
                 _slots.Add(questSlot);
             }
 
             _closeButton.OnClickAsObservable().Subscribe(_ => Dispose()).AddTo(Disposables);
-
-            var firstSlot = _slots.FirstOrDefault();
-        
-            if (firstSlot == null)
-                return;
-        
-            SelectedQuest(firstSlot.Config);
-        }
-
-        private void SelectedQuest(QuestConfig config)
-        {
-            foreach (var slot in _slots)
-                slot.ChangeSelectedSlot(slot.Config.Id == config.Id);
-        
-            _infoQuestView.Dispose();
-            _infoQuestView.Init(new InfoQuestView.Params(config, InputParams.PrefabPool));
+            SelectFirstQuestSlot();
         }
 
         public override void Dispose()
@@ -76,6 +63,39 @@ namespace QuestsSystem.Ui
             _slots.Clear();
             
             base.Dispose();
+        }
+
+        private QuestSlotView GetQuestSlot(IQuest quest)
+        {
+            var questSlot = InputParams.PrefabPool.Get(_questSlotView, new QuestSlotView.Params(quest.Config), _mountRootQuestSlots);
+            questSlot.OnSelectedSlot.Subscribe(SelectedQuest).AddTo(Disposables);
+            
+            if (quest.IsDone)
+                questSlot.CompletedState();
+
+            return questSlot;
+        }
+        
+        private void SelectFirstQuestSlot()
+        {
+            var firstSlot = _slots.FirstOrDefault();
+        
+            if (firstSlot == null)
+                return;
+        
+            SelectedQuest(firstSlot.Config);
+        }
+
+        private void SelectedQuest(QuestConfig config)
+        {
+            foreach (var slot in _slots)
+                slot.ChangeSelectedState(slot.Config.Id == config.Id);
+        
+            _infoQuestView.Dispose();
+            _infoQuestView.Init(new InfoQuestView.Params(config, InputParams.PrefabPool));
+            
+            var trackingQuest = InputParams.Quests.FirstOrDefault(quest => quest.Config.Id == config.Id);
+            _onTrackingQuest.Execute(trackingQuest);
         }
     }
 }

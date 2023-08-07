@@ -31,6 +31,10 @@ namespace Player
         
         [SerializeField] 
         private SpriteRenderer _spriteRenderer;
+        
+        [SerializeField] 
+        private Camera _camera;
+        public Camera Camera => _camera;
 
         private ContactsPoller _contactsPoller;
         private Vector2 _deltaPosition;

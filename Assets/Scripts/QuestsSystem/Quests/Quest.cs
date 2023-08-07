@@ -45,6 +45,7 @@ namespace QuestsSystem.Quests
         {
             if (IsDone)
             {
+                _onTrackingMission?.Execute(null);
                 _onQuestCompleted?.Execute(_questConfig);
                 Debug.Log("Common Quest done!");
             }
@@ -65,7 +66,6 @@ namespace QuestsSystem.Quests
             if (nextMission.IsCompleted)
             {
                 OnMissionCompleted(nextMission);
-                _onTrackingMission?.Execute(null);
             }
             else
             {

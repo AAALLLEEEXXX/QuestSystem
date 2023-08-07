@@ -1,6 +1,7 @@
 using Common;
 using Player;
 using QuestsSystem.Quests;
+using QuestsSystem.Tracking;
 using UniRx;
 using UnityEngine;
 
@@ -21,8 +22,17 @@ public class EntryPoint : MonoBehaviour
     private void Start()
     {
         _questConfigurator.Init(Unit.Default);
-        _worldUiCanvas.Init(new WorldUiCanvas.Params(_questConfigurator.Quests, _prefabPool));
+        
+        var missionPointTracker = new MissionPointTracker(_playerView.Camera, _worldUiCanvas.TrackedMissionWindow, _prefabPool);
+        _worldUiCanvas.Init(new WorldUiCanvas.Params(_questConfigurator, missionPointTracker, _prefabPool));
         
         _playerView.Init(new PlayerView.Params(_worldUiCanvas.MoveWidget));
+    }
+
+    private void OnDestroy()
+    {
+        _questConfigurator.Dispose();
+        _worldUiCanvas.Dispose();
+        _playerView.Dispose();
     }
 }

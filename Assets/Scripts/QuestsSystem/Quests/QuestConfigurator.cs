@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Common;
 using Quests.Configs;
 using QuestsSystem.Missions;
@@ -18,6 +19,8 @@ namespace QuestsSystem.Quests
 
         private List<IQuest> _quests = new();
         public List<IQuest> Quests => _quests;
+
+        public IQuest FirstNotDoneQuest => _quests.FirstOrDefault(quest => !quest.IsDone);
         
         private ReactiveCommand<QuestConfig> _onQuestCompleted = new();
         public IObservable<QuestConfig> OnQuestCompleted => _onQuestCompleted;

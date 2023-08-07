@@ -1,4 +1,5 @@
 using System;
+using UniRx;
 using UnityEngine;
 
 namespace QuestsSystem.Missions
@@ -9,7 +10,9 @@ namespace QuestsSystem.Missions
         private Transform _pointTracking;
         
         public Vector3 Position => _pointTracking != null ? _pointTracking.position : transform.position;
-        public IObservable<IMission> OnActivateObject { get; }
+
+        protected ReactiveCommand _onActivateObject = new();
+        public IObservable<Unit> OnActivateObject => _onActivateObject;
         
         public virtual void StateComplete()
         {

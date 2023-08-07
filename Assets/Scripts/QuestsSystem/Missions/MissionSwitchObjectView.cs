@@ -1,3 +1,4 @@
+using Player;
 using UnityEngine;
 
 namespace QuestsSystem.Missions
@@ -19,10 +20,10 @@ namespace QuestsSystem.Missions
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            // var player = collision.gameObject.GetComponent<PlayerController>();
-            //
-            // if (player != null)
-            //     OnActivateObject?.Invoke();
+            var player = collision.gameObject.GetComponent<PlayerView>();
+            
+            if (player != null)
+                _onActivateObject.Execute();
         }
 
         public override void StateComplete()

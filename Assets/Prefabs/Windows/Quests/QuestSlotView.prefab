@@ -419,6 +419,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _title: {fileID: 5084305503168056788}
   _selectedBackground: {fileID: 5084305501897121726}
+  _completedBackground: {fileID: 5549257504272102129}
   _selectedButton: {fileID: 2480869156593528882}
 --- !u!1 &6904613817989342504
 GameObject:
